@@ -1,84 +1,150 @@
 # PDF Chatbot
 
-AI-powered chatbot that answers questions based exclusively on PDF documents in the `./pdfs` directory.
+> AI-powered chatbot that answers questions based exclusively on PDF documents in the `./pdfs` directory.
 
-Built with Node.js, Express, React, LangChain, and Tailwind CSS.
+[![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Express](https://img.shields.io/badge/Express-4.18-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-0.0.130-121212)](https://www.langchain.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-412991?logo=openai&logoColor=white)](https://openai.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-## Features
+### 🤖 Overview
 
-- 📄 PDF-based knowledge retrieval using LangChain
-- 🤖 OpenAI GPT integration for natural language responses
-- 🎨 Modern UI with Tailwind CSS
-- 📱 Responsive design (mobile-friendly)
-- ♿ Accessibility features (ARIA labels, keyboard navigation)
-- 🔒 Secure API key management
+PDF Chatbot is a sophisticated AI-powered application designed for document-based question answering using Retrieval-Augmented Generation (RAG). The system analyzes PDF documents, creates vector embeddings, and provides accurate answers based exclusively on the provided content.
 
-## Tech Stack
+---
 
-**Backend:**
-- Node.js + Express
-- LangChain (RAG implementation)
-- OpenAI Embeddings & Chat API
-- In-memory vector store
+### ✨ Key Features
 
-**Frontend:**
-- React 18
-- Tailwind CSS
-- Axios
+#### 🎯 Core Functionality
+- **PDF-based knowledge retrieval** - Uses LangChain for document processing
+- **OpenAI GPT integration** - Natural language responses powered by GPT
+- **Vector store search** - Efficient similarity-based document retrieval
+- **Configurable threshold** - Adjustable relevance scoring
+- **Fallback handling** - Clear messaging when answers aren't found
 
-## Setup
+#### 🎨 User Experience
+- **Modern UI with Tailwind CSS** - Clean, responsive design
+- **Mobile-friendly** - Optimized for all screen sizes
+- **Accessibility features** - ARIA labels and keyboard navigation
+- **Chat widget interface** - Familiar messaging experience
 
-### 1. Install Dependencies
+#### 🔒 Security & Performance
+- **Secure API key management** - Environment-based configuration
+- **CORS protection** - Configured cross-origin policies
+- **In-memory vector store** - Fast document retrieval
+- **Customizable scoring** - Tune relevance thresholds
+
+---
+
+### 🏗️ Tech Stack
+
+**Frontend:** React 18, Tailwind CSS, Axios
+
+**Backend:** Node.js, Express, LangChain (RAG implementation), OpenAI Embeddings & Chat API, In-memory vector store
+
+**Development:** ESM modules, dotenv configuration
+
+---
+
+### 🚀 Quick Start
+
+**Prerequisites:** Node.js v20.x+, npm
 
 ```bash
-# Backend
+# Clone and install
+git clone https://github.com/yourusername/pdf-chatbot.git
+cd pdf-chatbot
 npm install
 
-# Frontend
+# Install frontend dependencies
 cd client
 npm install
 cd ..
-```
 
-### 2. Configure Environment Variables
-
-```bash
+# Configure environment
 cp .env.example .env
+# Edit .env and add your OpenAI API key
+
+# Add PDF documents
+# Place your PDF files in the ./pdfs directory
+
+# Start application
+npm start                    # Terminal 1: Backend (http://localhost:4000)
+cd client && npm start      # Terminal 2: Frontend (http://localhost:3000)
 ```
 
-Edit `.env` and add your OpenAI API key:
-```
-OPENAI_API_KEY=your_actual_api_key_here
-```
+---
 
-### 3. Add Your PDF Documents
+### 🔧 Common Commands
 
-Place your PDF files in the `./pdfs` directory.
-
-### 4. Start the Application
-
-**Terminal 1 - Backend:**
+#### Development
 ```bash
+# Start backend server
 npm start
-# Server will run on http://localhost:4000
+
+# Start frontend development server
+cd client && npm start
 ```
 
-**Terminal 2 - Frontend:**
+#### Configuration
 ```bash
-cd client
-npm start
-# React app will run on http://localhost:3000
+# Setup environment variables
+cp .env.example .env
+
+# Edit configuration
+# OPENAI_API_KEY - Your OpenAI API key
+# PDF_DIRECTORY - Directory containing PDFs (default: pdfs)
+# SCORE_THRESHOLD - Minimum similarity score (default: 0.70)
+# TOP_K - Number of chunks to retrieve (default: 5)
+# PORT - Backend server port (default: 4000)
 ```
 
-## Usage
+---
+
+### 💬 Usage
 
 1. Open http://localhost:3000 in your browser
 2. Click the chat button (💬) in the bottom-right corner
 3. Ask questions about your PDF documents
 4. The chatbot will answer based on the content in `./pdfs`
 
-## Project Structure
+---
 
+### 🏛️ Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   WEB CLIENT (React)                        │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
+│  │ ChatWidget  │  │     Chat     │  │   Tailwind UI   │   │
+│  └─────────────┘  └──────────────┘  └─────────────────┘   │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ HTTP POST /chat
+┌─────────────────────────▼───────────────────────────────────┐
+│                   API SERVER (Express)                      │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
+│  │   Routes    │  │     CORS     │  │   Middleware    │   │
+│  └─────────────┘  └──────┬───────┘  └─────────────────┘   │
+│                           │                                 │
+│  ┌────────────────────────▼──────────────────────────────┐ │
+│  │          LangChain Services                           │ │
+│  │  • PDF Loading & Text Splitting                       │ │
+│  │  • Vector Store (Embeddings)                          │ │
+│  │  • Similarity Search                                  │ │
+│  │  • OpenAI Chat Integration                            │ │
+│  └────────────────────────┬──────────────────────────────┘ │
+└───────────────────────────┼─────────────────────────────────┘
+                            │ OpenAI API
+┌───────────────────────────▼─────────────────────────────────┐
+│                   OPENAI SERVICES                           │
+│  • Embeddings API (text-embedding-ada-002)                 │
+│  • Chat Completions API (GPT-3.5/4)                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Project Structure:**
 ```
 .
 ├── src/
@@ -97,13 +163,40 @@ npm start
 └── .env                   # Environment variables (not in git)
 ```
 
-## Configuration
+**Key Design Decisions:**
+- **RAG (Retrieval-Augmented Generation)** - Combines vector search with LLM responses
+- **In-memory vector store** - Fast retrieval without external database
+- **Threshold-based filtering** - Only returns confident matches
+- **ESM modules** - Modern JavaScript architecture
+- **Separation of concerns** - Server, LangChain logic, and UI are decoupled
+
+---
+
+### ⚙️ Configuration
 
 You can adjust these settings in `.env`:
 
-- `SCORE_THRESHOLD`: Minimum similarity score (0-1) for search results (default: 0.70)
-- `TOP_K`: Number of document chunks to retrieve (default: 5)
-- `FALLBACK_TEXT`: Message shown when no relevant answer is found
-- `PORT`: Backend server port (default: 4000)
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OPENAI_API_KEY` | Your OpenAI API key | *Required* |
+| `PDF_DIRECTORY` | Directory containing PDFs | `pdfs` |
+| `SCORE_THRESHOLD` | Minimum similarity score (0-1) | `0.70` |
+| `TOP_K` | Number of document chunks to retrieve | `5` |
+| `FALLBACK_TEXT` | Message when no answer found | `Sorry, I cannot find...` |
+| `PORT` | Backend server port | `4000` |
+
+---
+
+### 🔒 Security Notes
+
+⚠️ **IMPORTANT:** Never commit `.env` with real API keys to version control!
+
+The `.gitignore` file is configured to exclude sensitive files:
+- `.env` files (API keys)
+- `node_modules/`
+- `client/build/`
+- `vectorStore.json` (generated)
+
+---
 
 MIT
